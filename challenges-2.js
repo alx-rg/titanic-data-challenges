@@ -25,7 +25,8 @@
 // Or if property = 'age' -> [40, 26, 22, 28, 23, 45, 21, ...]
 
 const getAllValuesForProperty = (data, property) => {
-	return []
+	const newArray = data.map((passenger) => passenger.fields[property])
+	return newArray
 }
 
 // 2 -------------------------------------------------------------
@@ -34,7 +35,8 @@ const getAllValuesForProperty = (data, property) => {
 // array of all the male passengers [{...}, {...}, {...}, ...]
 
 const filterByProperty = (data, property, value) => {
-	return []
+	const newMatches = data.filter((passenger) => passenger.fields[property]===value)
+	return newMatches
 }
 
 // 3 -------------------------------------------------------------
@@ -43,16 +45,21 @@ const filterByProperty = (data, property, value) => {
 // given property have been removed
 
 const filterNullForProperty = (data, property) => {
-	return []
+	const newFiltered = data.filter((passenger) => passenger.fields[property] !== undefined)
+	return newFiltered
 }
 
 // 4 -------------------------------------------------------------
 // Abstract the sum by creating a function that returns the sum 
 // for any (numeric) property
-// Return the total of all values for a given property. This
+// Return the total of all values for a given property.
 
 const sumAllProperty = (data, property) => {
-	return 0
+	const newArray = data.filter((passenger) => passenger.fields[property])
+	const newSum = newArray.reduce((acc ,passenger) => {
+		return acc + passenger.fields[property]
+	},0)
+	return newSum
 }
 
 
@@ -67,6 +74,9 @@ const sumAllProperty = (data, property) => {
 // at Cherbourg, 77 emabrked at Queenstown, and 2 are undedfined
 
 const countAllProperty = (data, property) => {
+	const uniquePassengers = data.filter((passenger) => passenger.fields[property])
+	const historgram = {}
+
 	return {}
 }
 
@@ -108,7 +118,7 @@ module.exports = {
 	filterNullForProperty,
 	sumAllProperty,
 	countAllProperty,
-	makeHistogram,
+	// makeHistogram,
 	normalizeProperty,
 	getUniqueValues
 }
