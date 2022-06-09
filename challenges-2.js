@@ -74,10 +74,15 @@ const sumAllProperty = (data, property) => {
 // at Cherbourg, 77 emabrked at Queenstown, and 2 are undedfined
 
 const countAllProperty = (data, property) => {
-	const uniquePassengers = data.filter((passenger) => passenger.fields[property])
-	const historgram = {}
-
-	return {}
+	const uniqueValues = data.reduce((acc, passengers) => {
+		if (acc[passengers.fields[property]] === undefined || 0) {
+			acc[passengers.fields[property]] = 1
+		} else {
+			acc[passengers.fields[property]] += 1
+		}
+		return acc
+	}, {})
+	return uniqueValues
 }
 
 
@@ -87,7 +92,17 @@ const countAllProperty = (data, property) => {
 // of items in each bucket.
 
 const makeHistogram = (data, property, step) => {
-	return []
+	const noNull = data.filter((passenger) => passenger.fields[property] !== undefined)
+	const uniqueValues = noNull.reduce((acc, passengers) => {
+		if (acc[Math.floor(passengers.fields[property] / step)] === undefined) {
+			acc[Math.floor(passengers.fields[property] / step)] = 1			
+		} else {
+			acc[Math.floor(passengers.fields[property] / step)] += 1
+		}
+		return acc
+	}, [])
+	
+	return Array.from(uniqueValues, value => value || 0)
 }
 
 // 7 ------------------------------------------------------------
@@ -96,7 +111,11 @@ const makeHistogram = (data, property, step) => {
 // to divide each value by the maximum value in the array.
 
 const normalizeProperty = (data, property) => {
-	return []
+	const removedNull = data.filter((passenger) => !isNaN(passenger.fields))
+	const allData = removedNull.map((passenger) => passenger.fields[property])
+	const maxData = Math.max(...allData)
+	const normalizedValues = allData.map((value) => value / maxData)
+	return normalizedValues
 }
 
 // 8 ------------------------------------------------------------
@@ -118,7 +137,7 @@ module.exports = {
 	filterNullForProperty,
 	sumAllProperty,
 	countAllProperty,
-	// makeHistogram,
+	makeHistogram,
 	normalizeProperty,
 	getUniqueValues
 }

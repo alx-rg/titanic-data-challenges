@@ -135,7 +135,7 @@ describe('Challenge 2 Titanic', () => {
 		expect(index.countAllProperty(data, 'pclass')).toEqual(pclassCounts)
 	})
 
-	test.skip('Test makeHistogram', () => {
+	test('Test makeHistogram', () => {
 
 		const ages10 = data.filter(p => p.fields.age !== undefined).reduce((acc, p) => {
 			if (acc[Math.floor(p.fields.age / 10)] === undefined) {
@@ -176,7 +176,7 @@ describe('Challenge 2 Titanic', () => {
 		expect(index.makeHistogram(data, 'fare', 10)).toEqual(Array.from(fares, v => v || 0))
 	})
 
-	test.skip('Test normalizeProperty', () => {
+	test('Test normalizeProperty', () => {
 		const ages = data.filter(p => p.fields.age !== undefined).map(p => p.fields.age)
 		const maxAge = Math.max(...ages)
 		const normalizedAges = ages.map(v => v / maxAge)
