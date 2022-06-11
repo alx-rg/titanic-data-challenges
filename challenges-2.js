@@ -1,9 +1,9 @@
 // ================================================================
 
-// Titanic Dataset challenges! 
+// Titanic Dataset challenges!
 
 // Your goal is to write some functions that will extract
-// relevant data from the dataset. 
+// relevant data from the dataset.
 
 // Write your code here in this file. 
 
@@ -25,9 +25,9 @@
 // Or if property = 'age' -> [40, 26, 22, 28, 23, 45, 21, ...]
 
 const getAllValuesForProperty = (data, property) => {
-	const newArray = data.map((passenger) => passenger.fields[property])
-	return newArray
-}
+  const newArray = data.map((passenger) => passenger.fields[property]);
+  return newArray;
+};
 
 // 2 -------------------------------------------------------------
 // Return an array where a given property matches the given value
@@ -35,9 +35,9 @@ const getAllValuesForProperty = (data, property) => {
 // array of all the male passengers [{...}, {...}, {...}, ...]
 
 const filterByProperty = (data, property, value) => {
-	const newMatches = data.filter((passenger) => passenger.fields[property]===value)
-	return newMatches
-}
+  const newMatches = data.filter((passenger) => passenger.fields[property]===value)
+  return newMatches;
+};
 
 // 3 -------------------------------------------------------------
 // Filter out missing or null values
@@ -45,8 +45,8 @@ const filterByProperty = (data, property, value) => {
 // given property have been removed
 
 const filterNullForProperty = (data, property) => {
-	const newFiltered = data.filter((passenger) => passenger.fields[property] !== undefined)
-	return newFiltered
+  const newFiltered = data.filter((passenger) => passenger.fields[property] !== undefined)
+  return newFiltered
 }
 
 // 4 -------------------------------------------------------------
@@ -55,11 +55,11 @@ const filterNullForProperty = (data, property) => {
 // Return the total of all values for a given property.
 
 const sumAllProperty = (data, property) => {
-	const newArray = data.filter((passenger) => passenger.fields[property])
-	const newSum = newArray.reduce((acc ,passenger) => {
-		return acc + passenger.fields[property]
-	},0)
-	return newSum
+  const newArray = data.filter((passenger) => passenger.fields[property])
+  const newSum = newArray.reduce((acc ,passenger) => {
+    return acc + passenger.fields[property]
+  },0)
+  return newSum
 }
 
 
@@ -74,15 +74,15 @@ const sumAllProperty = (data, property) => {
 // at Cherbourg, 77 emabrked at Queenstown, and 2 are undedfined
 
 const countAllProperty = (data, property) => {
-	const uniqueValues = data.reduce((acc, passengers) => {
-		if (acc[passengers.fields[property]] === undefined || 0) {
-			acc[passengers.fields[property]] = 1
-		} else {
-			acc[passengers.fields[property]] += 1
-		}
-		return acc
-	}, {})
-	return uniqueValues
+  const uniqueValues = data.reduce((acc, passengers) => {
+    if (acc[passengers.fields[property]] === undefined || 0) {
+      acc[passengers.fields[property]] = 1
+    } else {
+      acc[passengers.fields[property]] += 1
+    }
+    return acc
+  }, {})
+  return uniqueValues
 }
 
 
@@ -92,17 +92,17 @@ const countAllProperty = (data, property) => {
 // of items in each bucket.
 
 const makeHistogram = (data, property, step) => {
-	const noNull = data.filter((passenger) => passenger.fields[property] !== undefined)
-	const uniqueValues = noNull.reduce((acc, passengers) => {
-		if (acc[Math.floor(passengers.fields[property] / step)] === undefined) {
-			acc[Math.floor(passengers.fields[property] / step)] = 1			
-		} else {
-			acc[Math.floor(passengers.fields[property] / step)] += 1
-		}
-		return acc
-	}, [])
-	
-	return Array.from(uniqueValues, value => value || 0)
+  const noNull = data.filter((passenger) => passenger.fields[property] !== undefined)
+  const uniqueValues = noNull.reduce((acc, passengers) => {
+    if (acc[Math.floor(passengers.fields[property] / step)] === undefined) {
+      acc[Math.floor(passengers.fields[property] / step)] = 1      
+    } else {
+      acc[Math.floor(passengers.fields[property] / step)] += 1
+    }
+    return acc
+  }, [])
+  
+  return Array.from(uniqueValues, value => value || 0)
 }
 
 // 7 ------------------------------------------------------------
@@ -111,11 +111,11 @@ const makeHistogram = (data, property, step) => {
 // to divide each value by the maximum value in the array.
 
 const normalizeProperty = (data, property) => {
-	const removedNull = data.filter((passenger) => !isNaN(passenger.fields))
-	const allData = removedNull.map((passenger) => passenger.fields[property])
-	const maxData = Math.max(...allData)
-	const normalizedValues = allData.map((value) => value / maxData)
-	return normalizedValues
+  const removedNull = data.filter((passenger) => passenger.fields[property] !== undefined)
+  const allData = removedNull.map((passenger) => passenger.fields[property])
+  const maxData = Math.max(...allData)
+  const normalizedValues = allData.map((value) => value / maxData)
+  return normalizedValues
 }
 
 // 8 ------------------------------------------------------------
@@ -126,18 +126,23 @@ const normalizeProperty = (data, property) => {
 // would return ['male', 'female']
 
 const getUniqueValues = (data, property) => {
-	return []
+  const getAllUniqueValues = data.reduce((acc, passenger) => {
+    const propertyValues = passenger.fields[property]
+    return { [propertyValues]: propertyValues, ...acc }
+  }, {}) 
+
+  return Object.values(getAllUniqueValues)
 }
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 module.exports = {
-	getAllValuesForProperty,
-	filterByProperty,
-	filterNullForProperty,
-	sumAllProperty,
-	countAllProperty,
-	makeHistogram,
-	normalizeProperty,
-	getUniqueValues
+  getAllValuesForProperty,
+  filterByProperty,
+  filterNullForProperty,
+  sumAllProperty,
+  countAllProperty,
+  makeHistogram,
+  normalizeProperty,
+  getUniqueValues
 }
